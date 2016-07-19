@@ -16,7 +16,6 @@ public class GUI {
             Display.setInitialBackground(1.0f,1.0f,0.0f);
             Display.create();
             Display.setTitle("Program Window");
-            Display.setResizable(true);
 
         } catch (LWJGLException e) {
             e.printStackTrace();
