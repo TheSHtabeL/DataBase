@@ -8,12 +8,27 @@ import org.lwjgl.LWJGLException;
 
 public class GUI {
     void init() {
-        try{
-            Display.setDisplayMode(new DisplayMode(Values.WIDTH,Values.HEIGHT));
+        try {
+            Display.setDisplayMode(new DisplayMode(Values.WIDTH, Values.HEIGHT));
             Display.create();
-        }catch (LWJGLException e){
+            Display.setTitle("Program Window");
+            Display.setResizable(true);
+        } catch (LWJGLException e) {
             e.printStackTrace();
             System.exit(0);
         }
+    }
+    void terminate(){
+        Display.destroy();
+    }
+    void draw(){
+
+    }
+    void update(){
+        updateOpenGL();
+    }
+    private void updateOpenGL(){
+        Display.update();
+        Display.sync(Values.FPS);
     }
 }
