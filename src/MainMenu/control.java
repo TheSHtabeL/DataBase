@@ -12,6 +12,7 @@ public class control {
         gui.init();
         while(!Display.isCloseRequested()){
             gui.draw();
+            gui.update();
         }
         gui.terminate();
     }
