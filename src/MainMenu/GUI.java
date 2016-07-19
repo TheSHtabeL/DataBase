@@ -1,6 +1,5 @@
 package MainMenu;
 
-import org.lwjgl.*;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
