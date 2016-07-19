@@ -8,7 +8,7 @@ import org.lwjgl.LWJGLException;
 import static org.lwjgl.opengl.GL11.*;
 
 public class GUI {
-    private Button[] buttons;
+    private static Button[] buttons;
     void init() {
         try {
             //Создаём окно
@@ -23,24 +23,29 @@ public class GUI {
             System.exit(0);
         }
         //Создаём кнопки
-       // buttons[0] = new Button( (Display.getWidth()/2)-100, (Display.getHeight()/2)-50, (Display.getWidth()/2)+100, (Display.getHeight()/2)+50 );
+        buttons = new Button[3];
+        buttons[0] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2)-200, (Display.getWidth()/2)+200, (Display.getHeight()/2)-100 );
+        buttons[1] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2)-50, (Display.getWidth()/2)+200, (Display.getHeight()/2)+50 );
+        buttons[2] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2)+100, (Display.getWidth()/2)+200, (Display.getHeight()/2)+200 );
     }
     void terminate(){
         Display.destroy();
     }
     void draw(){
         glClear(GL_COLOR_BUFFER_BIT);
-//        glMatrixMode(GL_PROJECTION);
-//        glLoadIdentity();
-//        glOrtho(0,Values.WIDTH,Values.HEIGHT,0,1,-1);
-//        glMatrixMode(GL_MODELVIEW);
-//        GL11.glColor3f(1.0f,0.0f,0.0f);
-//        glBegin(GL_QUADS);
-//        glVertex2f(buttons[0].x0,buttons[1].y0);
-//        glVertex2f(buttons[0].x1,buttons[1].y0);
-//        glVertex2f(buttons[0].x1,buttons[1].y1);
-//        glVertex2f(buttons[0].x0,buttons[1].y1);
-//        glEnd();
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0,Values.WIDTH,Values.HEIGHT,0,1,-1);
+        glMatrixMode(GL_MODELVIEW);
+        GL11.glColor3f(1.0f,0.0f,0.0f);
+        glBegin(GL_QUADS);
+        for(int i=0; i<3; i++) {
+            glVertex2f(buttons[i].x0, buttons[i].y0);
+            glVertex2f(buttons[i].x1, buttons[i].y0);
+            glVertex2f(buttons[i].x1, buttons[i].y1);
+            glVertex2f(buttons[i].x0, buttons[i].y1);
+        }
+        glEnd();
     }
     void update(){
         updateOpenGL();
