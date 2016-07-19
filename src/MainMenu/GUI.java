@@ -9,7 +9,7 @@ import org.lwjgl.LWJGLException;
 public class GUI {
     void init() {
         try{
-            Display.setDisplayMode(new DisplayMode(WIDTH,HEIGHT));
+            Display.setDisplayMode(new DisplayMode(Values.WIDTH,Values.HEIGHT));
             Display.create();
         }catch (LWJGLException e){
             e.printStackTrace();
