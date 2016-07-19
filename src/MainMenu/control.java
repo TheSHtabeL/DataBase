@@ -11,7 +11,9 @@ public class control {
         GUI gui = new GUI();
         gui.init();
         while(!Display.isCloseRequested()){
-            gui.draw();
+            if(gui.draw()){
+                return;
+            };
             gui.update();
         }
         gui.terminate();

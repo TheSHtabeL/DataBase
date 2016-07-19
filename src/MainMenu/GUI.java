@@ -1,6 +1,7 @@
 package MainMenu;
 
 import org.lwjgl.*;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.*;
@@ -30,21 +31,29 @@ public class GUI {
     void terminate(){
         Display.destroy();
     }
-    void draw(){
+    boolean draw(){
         glClear(GL_COLOR_BUFFER_BIT);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         glOrtho(0,Values.WIDTH,Values.HEIGHT,0,1,-1);
         glMatrixMode(GL_MODELVIEW);
-        GL11.glColor3f(1.0f,0.0f,0.0f);
         glBegin(GL_QUADS);
         for(int i=0; i<3; i++) {
+            if(buttons[i].isActive(Mouse.getX(),Values.HEIGHT-Mouse.getY())){
+                GL11.glColor3f(0.0f,1.0f,0.0f);
+                if( Mouse.isButtonDown(0) && (i==2) ){
+                    return true;
+                }
+            }else{
+                GL11.glColor3f(1.0f,0.0f,0.0f);
+            }
             glVertex2f(buttons[i].x0, buttons[i].y0);
             glVertex2f(buttons[i].x1, buttons[i].y0);
             glVertex2f(buttons[i].x1, buttons[i].y1);
             glVertex2f(buttons[i].x0, buttons[i].y1);
         }
         glEnd();
+        return false;
     }
     void update(){
         updateOpenGL();
