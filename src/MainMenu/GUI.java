@@ -1,5 +1,6 @@
 package MainMenu;
 
+import Settings.*;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -38,12 +39,15 @@ public class GUI {
         glMatrixMode(GL_MODELVIEW);
         glBegin(GL_QUADS);
         for(int i=0; i<3; i++) {
-            if(buttons[i].isActive(Mouse.getX(),Values.HEIGHT-Mouse.getY())){
-                GL11.glColor3f(0.0f,1.0f,0.0f);
-                if( Mouse.isButtonDown(0) && (i==2) ){
+            if(buttons[i].isActive(Mouse.getX(),Values.HEIGHT-Mouse.getY())) {
+                GL11.glColor3f(0.0f, 1.0f, 0.0f);
+                if (Mouse.isButtonDown(0) && (i == 2)) {
                     return true;
                 }
-            }else{
+            }else if(Mouse.isButtonDown(1) && (i == 1)){
+                Settings.Control control = new Control();
+                control.main();
+            }else {
                 GL11.glColor3f(1.0f,0.0f,0.0f);
             }
             glVertex2f(buttons[i].x0, buttons[i].y0);
