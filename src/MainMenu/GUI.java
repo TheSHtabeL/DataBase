@@ -22,10 +22,11 @@ public class GUI {
             System.exit(0);
         }
         //Создаём кнопки
-        buttons = new Button[3];
-        buttons[0] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2)-200, (Display.getWidth()/2)+200, (Display.getHeight()/2)-100 );
-        buttons[1] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2)-50, (Display.getWidth()/2)+200, (Display.getHeight()/2)+50 );
-        buttons[2] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2)+100, (Display.getWidth()/2)+200, (Display.getHeight()/2)+200 );
+        buttons = new Button[4];
+        buttons[0] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2)-200, (Display.getWidth()/2)+200, (Display.getHeight()/2)-125 ); //Start
+        buttons[1] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2)-100, (Display.getWidth()/2)+200, (Display.getHeight()/2)-25 ); //Load
+        buttons[2] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2), (Display.getWidth()/2)+200, (Display.getHeight()/2)+75 ); //Settings
+        buttons[3] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2)+100, (Display.getWidth()/2)+200, (Display.getHeight()/2)+175 ); //Exit
     }
     void terminate(){
         Display.destroy();
@@ -37,13 +38,13 @@ public class GUI {
         glOrtho(0,Values.WIDTH,Values.HEIGHT,0,1,-1);
         glMatrixMode(GL_MODELVIEW);
         glBegin(GL_QUADS);
-        for(int i=0; i<3; i++) {
+        for(int i=0; i<4; i++) {
 
             if(buttons[i].isActive(Mouse.getX(),Values.HEIGHT-Mouse.getY())) {
                 GL11.glColor3f(0.0f, 1.0f, 0.0f);
-                if (Mouse.isButtonDown(0) && (i == 2)) {
+                if (Mouse.isButtonDown(0) && (i == 3)) {
                     return true;
-                }else if(Mouse.isButtonDown(0) && (i == 1)) {
+                }else if(Mouse.isButtonDown(0) && (i == 2)) {
                     Settings.Control control = new Control();
                     control.main();
                 }
