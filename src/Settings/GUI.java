@@ -18,7 +18,7 @@ public class GUI {
     Texture textureBind(String name){
         Texture texture = null;
         try {
-            texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("img/Settings" + name));
+            texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("img/Settings/" + name));
         } catch(IOException e){
             e.printStackTrace();
             System.out.print(1);
@@ -27,20 +27,31 @@ public class GUI {
     }
     void clear(){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glColor3f(1.0f,1.0f,0.0f);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         glOrtho(0, MainMenu.Values.WIDTH, MainMenu.Values.HEIGHT,0,1,-1);
         glMatrixMode(GL_MODELVIEW);
         glBegin(GL_QUADS);
         glVertex2f(0,0);
-        glVertex2f(0,MainMenu.Values.HEIGHT);
-        glVertex2f(MainMenu.Values.WIDTH,MainMenu.Values.HEIGHT);
-        glVertex2f(MainMenu.Values.WIDTH,0);
+        glVertex2f(0,Values.HEIGHT);
+        glVertex2f(Values.WIDTH,MainMenu.Values.HEIGHT);
+        glVertex2f(Values.WIDTH,0);
         glEnd();
     }
     void draw(){
        //TODO: Добавить каркас интерфейса
+        //Рисуем background
+        background.bind();
+        glBegin(GL_QUADS);
+        glTexCoord2f(0,0);
+        glVertex2f(0,0);
+        glTexCoord2f(0,1);
+        glVertex2f(0, Values.HEIGHT);
+        glTexCoord2f(1,1);
+        glVertex2f(Values.WIDTH, Values.HEIGHT);
+        glTexCoord2f(1,0);
+        glVertex2f(Values.WIDTH, 0);
+        glEnd();
     }
     void update(){
         updateOpenGL();

@@ -6,10 +6,14 @@ import org.lwjgl.opengl.Display;
 public class Control {
     public void main(){
         GUI gui = new GUI();
+        gui.init();
         gui.clear();
         gui.update();
         gui.clear();
-        while( !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !Display.isCloseRequested()){
+        while( !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+            if(Display.isCloseRequested()){
+                System.exit(0);
+            }
             gui.update();
             gui.draw();
         }
