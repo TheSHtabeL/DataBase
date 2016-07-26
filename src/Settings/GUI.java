@@ -11,9 +11,13 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class GUI {
     private static Texture background;
+    private static Texture fullscreen;
+    private static Texture sound;
     void init(){
         //Считываем текстуры
         background = textureBind("background.png");
+        fullscreen = textureBind("textFullscreen.png");
+        sound = textureBind("textSound.png");
     }
     Texture textureBind(String name){
         Texture texture = null;
@@ -51,6 +55,29 @@ public class GUI {
         glVertex2f(Values.WIDTH, Values.HEIGHT);
         glTexCoord2f(1,0);
         glVertex2f(Values.WIDTH, 0);
+        glEnd();
+        //Выводим текст
+        fullscreen.bind();
+        glBegin(GL_QUADS);
+        glTexCoord2f(0,0);
+        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) - 150);
+        glTexCoord2f(0,1);
+        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) - 50);
+        glTexCoord2f(1,1);
+        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) - 50);
+        glTexCoord2f(1,0);
+        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) - 150);
+        glEnd();
+        sound.bind();
+        glBegin(GL_QUADS);
+        glTexCoord2f(0,0);
+        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) + 50);
+        glTexCoord2f(0,1);
+        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) + 150);
+        glTexCoord2f(1,1);
+        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) + 150);
+        glTexCoord2f(1,0);
+        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) + 50);
         glEnd();
     }
     void update(){
