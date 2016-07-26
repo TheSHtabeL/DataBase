@@ -13,14 +13,22 @@ public class GUI {
     private static Texture background;
     private static Texture fullscreen;
     private static Texture sound;
-    private static Button buttons[];
+    private static Texture filled;
+    private static Texture unfilled;
+    private static Texture flag[] = new Texture[2];
+    private static Button buttons[] = new Button[2];
+    private static boolean permission = true;
     void init(){
         //Считываем текстуры
         background = textureBind("background.png");
         fullscreen = textureBind("textFullscreen.png");
         sound = textureBind("textSound.png");
-        buttons[0] = new Button((Values.WIDTH/2) - 50, (Values.HEIGHT/2) - 50, (Values.WIDTH/2) + 50, (Values.HEIGHT/2) + 50);
-        buttons[1] = new Button((Values.WIDTH/2) - 50, (Values.HEIGHT/2) + 250, (Values.WIDTH/2) + 50, (Values.HEIGHT/2) + 350);
+        filled = textureBind("aSquare.png");
+        unfilled = textureBind("naSquare.png");
+        buttons[0] = new Button((Values.WIDTH/2) + 150, (Values.HEIGHT/2) - 200, (Values.WIDTH/2) + 250, (Values.HEIGHT/2) - 100);
+        buttons[1] = new Button((Values.WIDTH/2) + 150, (Values.HEIGHT/2), (Values.WIDTH/2) + 250, (Values.HEIGHT/2) + 100);
+        flag[0] = unfilled;
+        flag[1] = unfilled;
     }
     Texture textureBind(String name){
         Texture texture = null;
@@ -46,7 +54,6 @@ public class GUI {
         glEnd();
     }
     void draw(){
-       //TODO: Добавить каркас интерфейса
         //Рисуем background
         background.bind();
         glBegin(GL_QUADS);
@@ -63,29 +70,62 @@ public class GUI {
         fullscreen.bind();
         glBegin(GL_QUADS);
         glTexCoord2f(0,0);
-        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) - 200);
+        glVertex2f((Values.WIDTH/2) - 300, (Values.HEIGHT/2) - 200);
         glTexCoord2f(0,1);
-        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) - 100);
+        glVertex2f((Values.WIDTH/2) - 300, (Values.HEIGHT/2) - 100);
         glTexCoord2f(1,1);
-        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) - 100);
+        glVertex2f((Values.WIDTH/2) + 100, (Values.HEIGHT/2) - 100);
         glTexCoord2f(1,0);
-        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) - 200);
+        glVertex2f((Values.WIDTH/2) + 100, (Values.HEIGHT/2) - 200);
         glEnd();
         sound.bind();
         glBegin(GL_QUADS);
         glTexCoord2f(0,0);
-        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) + 100);
+        glVertex2f((Values.WIDTH/2) - 300, (Values.HEIGHT/2));
         glTexCoord2f(0,1);
-        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) + 200);
+        glVertex2f((Values.WIDTH/2) - 300, (Values.HEIGHT/2) + 100);
         glTexCoord2f(1,1);
-        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) + 200);
+        glVertex2f((Values.WIDTH/2) + 100, (Values.HEIGHT/2) + 100);
         glTexCoord2f(1,0);
-        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) + 100);
+        glVertex2f((Values.WIDTH/2) + 100, (Values.HEIGHT/2));
         glEnd();
+        for(int i=0; i<2; i++){
+            if(buttons[i].isActive(Mouse.getX(),Values.HEIGHT-Mouse.getY()) && Mouse.isButtonDown(0)) {
+                if(permission) {
+                    permission = !permission;
+                    if (flag[i] == filled) {
+                        flag[i] = unfilled;
+                    } else {
+                        flag[i] = filled;
+                    }
+                }
+            }
+            if(!Mouse.isButtonDown(0)){
+                permission = true;
+            }
+            flag[i].bind();
+            glBegin(GL_QUADS);
+            glTexCoord2f(0,0);
+            glVertex2f(buttons[i].x0, buttons[i].y0);
+            glTexCoord2f(1,0);
+            glVertex2f(buttons[i].x1, buttons[i].y0);
+            glTexCoord2f(1,1);
+            glVertex2f(buttons[i].x1, buttons[i].y1);
+            glTexCoord2f(0,1);
+            glVertex2f(buttons[i].x0, buttons[i].y1);
+            glEnd();
+        }
     }
     void update(){
         updateOpenGL();
         //TODO: работа над кнопками и изменением другого GUI
+    }
+    void reveal(){
+        background.release();
+        fullscreen.release();
+        sound.release();
+        filled.release();
+        unfilled.release();
     }
     void updateOpenGL(){
         Display.update();

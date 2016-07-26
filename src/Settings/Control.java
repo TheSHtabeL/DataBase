@@ -17,5 +17,6 @@ public class Control {
             gui.update();
             gui.draw();
         }
+        gui.reveal();
     }
 }
