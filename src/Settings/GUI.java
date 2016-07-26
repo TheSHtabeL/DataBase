@@ -13,11 +13,14 @@ public class GUI {
     private static Texture background;
     private static Texture fullscreen;
     private static Texture sound;
+    private static Button buttons[];
     void init(){
         //Считываем текстуры
         background = textureBind("background.png");
         fullscreen = textureBind("textFullscreen.png");
         sound = textureBind("textSound.png");
+        buttons[0] = new Button((Values.WIDTH/2) - 50, (Values.HEIGHT/2) - 50, (Values.WIDTH/2) + 50, (Values.HEIGHT/2) + 50);
+        buttons[1] = new Button((Values.WIDTH/2) - 50, (Values.HEIGHT/2) + 250, (Values.WIDTH/2) + 50, (Values.HEIGHT/2) + 350);
     }
     Texture textureBind(String name){
         Texture texture = null;
@@ -60,24 +63,24 @@ public class GUI {
         fullscreen.bind();
         glBegin(GL_QUADS);
         glTexCoord2f(0,0);
-        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) - 150);
+        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) - 200);
         glTexCoord2f(0,1);
-        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) - 50);
+        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) - 100);
         glTexCoord2f(1,1);
-        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) - 50);
+        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) - 100);
         glTexCoord2f(1,0);
-        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) - 150);
+        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) - 200);
         glEnd();
         sound.bind();
         glBegin(GL_QUADS);
         glTexCoord2f(0,0);
-        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) + 50);
+        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) + 100);
         glTexCoord2f(0,1);
-        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) + 150);
+        glVertex2f((Values.WIDTH/2) - 200, (Values.HEIGHT/2) + 200);
         glTexCoord2f(1,1);
-        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) + 150);
+        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) + 200);
         glTexCoord2f(1,0);
-        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) + 50);
+        glVertex2f((Values.WIDTH/2) + 200, (Values.HEIGHT/2) + 100);
         glEnd();
     }
     void update(){
