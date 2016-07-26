@@ -17,9 +17,15 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class GUI {
     private static Button[] buttons;
+    //Объявим текстуры для области действия класса "Главное меню"
     private static Texture background;
-    private static Texture buttonNotActive;
-    private static Texture buttonActive;
+    private static Texture startActive;
+    private static Texture startNotActive;
+    private static Texture settingsActive;
+    private static Texture settingsNotActive;
+    private static Texture exitActive;
+    private static Texture exitNotActive;
+
     void init() {
         try {
             //Создаём окно
@@ -42,11 +48,15 @@ public class GUI {
         buttons[0] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2)-100, (Display.getWidth()/2)+200, (Display.getHeight()/2)-25 ); //Start
         buttons[1] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2), (Display.getWidth()/2)+200, (Display.getHeight()/2)+75); //Load
         buttons[2] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2)+100, (Display.getWidth()/2)+200, (Display.getHeight()/2)+175 ); //Settings
-        buttons[3] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2)+200, (Display.getWidth()/2)+200, (Display.getHeight()/2)+275 ); //Exit
+        //buttons[3] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2)+200, (Display.getWidth()/2)+200, (Display.getHeight()/2)+275 ); //Exit
         //Грузим текстуры
-        background = textureBind("Background.png");
-        buttonActive = textureBind("newGameActive.png");
-        buttonNotActive = textureBind("newGameNotActive.png");
+        background = textureBind("Main Menu/Background.png");
+        startActive = textureBind("Main Menu/aStartButton.png");
+        startNotActive = textureBind("Main Menu/naStartButton.png");
+        settingsActive = textureBind("Main Menu/aSettings.png");
+        settingsNotActive = textureBind("Main Menu/naSettings.png");
+        exitActive = textureBind("Main Menu/aExit.png");
+        exitNotActive = textureBind("Main Menu/naExit.png");
     }
     Texture textureBind(String texName){
         Texture texture = null;
@@ -81,22 +91,40 @@ public class GUI {
         glEnd();
     }
     boolean draw(){
-        Texture button;
+        Texture button = null;
         glClear(GL_COLOR_BUFFER_BIT);
         setBackground();
-        for(int i=0; i<4; i++) {
+        for(int i=0; i<3; i++) {
             if(buttons[i].isActive(Mouse.getX(),Values.HEIGHT-Mouse.getY())) {
-                //GL11.glColor3f(0.0f, 1.0f, 0.0f);
-                button = buttonActive;
-                if (Mouse.isButtonDown(0) && (i == 3)) {
+                switch (i){
+                    case 0:
+                        button = startActive;
+                        break;
+                    case 1:
+                        button = settingsActive;
+                        break;
+                    case 2:
+                        button = exitActive;
+                        break;
+                }
+                if (Mouse.isButtonDown(0) && (i == 2)) {
                     return true;
-                }else if(Mouse.isButtonDown(0) && (i == 2)) {
+                }else if(Mouse.isButtonDown(0) && (i == 1)) {
                     Settings.Control control = new Control();
                     control.main();
                 }
             }else {
-                button = buttonNotActive;
-                //GL11.glColor3f(1.0f,0.0f,0.0f);
+                switch (i){
+                    case 0:
+                        button = startNotActive;
+                        break;
+                    case 1:
+                        button = settingsNotActive;
+                        break;
+                    case 2:
+                        button = exitNotActive;
+                        break;
+                }
             }
             button.bind();
             glBegin(GL_QUADS);
