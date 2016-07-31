@@ -1,7 +1,3 @@
-import MainMenu.*;
-import Settings.Control;
-import MainScreen.*;
-
 public class main {
     public static void main(String[] args) {
         MainMenu.Control mainMenu = new MainMenu.Control();
