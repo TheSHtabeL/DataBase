@@ -1,6 +1,7 @@
 package MainScreen;
 
 
+import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
@@ -25,8 +26,13 @@ public class GUI {
 
     }
     int draw(){
-
+        //Рисуем фон
+        
         return 0;
+    }
+    void update(){
+        Display.update();
+        Display.sync(Values.FPS);
     }
     void reveal(){
         background.release();
