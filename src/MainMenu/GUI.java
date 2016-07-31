@@ -91,6 +91,8 @@ public class GUI {
                     return 2;
                 }else if(Mouse.isButtonDown(0) && (i == 1)) {
                     return 1;
+                }else if(Mouse.isButtonDown(0) && (i == 0)){
+                    return 0;
                 }
             }else {
                 switch (i){
