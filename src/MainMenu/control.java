@@ -1,21 +1,24 @@
 package MainMenu;
 
-import org.lwjgl.*;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.*;
-import org.lwjgl.LWJGLException;
 
-public class control {
-    public void main(){
+public class Control {
+    public int main(){
         GUI gui = new GUI();
         gui.init();
-        while(!Display.isCloseRequested()){
-            if(gui.draw()){
-                return;
-            };
+        while(true){
+            if(Display.isCloseRequested()){
+                gui.terminate();
+                System.exit(0);
+            }
+            int i = gui.draw();
+            switch (i){
+                case 0:
+                case 1:
+                case 2:
+                    return i;
+            }
             gui.update();
         }
-        gui.terminate();
     }
 }
