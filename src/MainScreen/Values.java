@@ -1,7 +1,7 @@
 package MainScreen;
 
-/**
- * Created by SHtabeL on 31.07.2016.
- */
 public class Values {
+    public static int FPS = 30;
+    public static int WIDTH = 1280;
+    public static int HEIGHT = 720;
 }
