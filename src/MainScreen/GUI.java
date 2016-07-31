@@ -1,6 +1,8 @@
 package MainScreen;
 
 import java.io.IOException;
+
+import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.util.ResourceLoader;
@@ -46,13 +48,17 @@ public class GUI {
     }
     int draw(){
         setBackground();
-        return 0;
+        if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+            return 0;
+        }else {
+            return 1;
+        }
     }
     void update(){
         Display.update();
         Display.sync(Values.FPS);
     }
-    void reveal(){
+    void release(){
         background.release();
     }
 }
