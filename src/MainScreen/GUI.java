@@ -1,12 +1,13 @@
 package MainScreen;
 
-
-import org.lwjgl.opengl.Display;
-import org.newdawn.slick.opengl.Texture;
+import java.io.IOException;
 import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.util.ResourceLoader;
 
-import java.io.IOException;
+import org.lwjgl.opengl.Display;
+
+import static org.lwjgl.opengl.GL11.*;
 
 public class GUI {
     private static Texture background;
@@ -25,9 +26,26 @@ public class GUI {
         background = textureBind("background");
 
     }
+    void setBackground(){
+        //Натянуть текстуру background
+        background.bind();
+        background.getImageHeight();
+        background.getImageWidth();
+        background.getTextureHeight();
+        background.getTextureWidth();
+        glBegin(GL_QUADS);
+        glTexCoord2f(0,0);
+        glVertex2f(0,0);
+        glTexCoord2f(0,1);
+        glVertex2f(0,Values.HEIGHT);
+        glTexCoord2f(1,1);
+        glVertex2f(Values.WIDTH,Values.HEIGHT);
+        glTexCoord2f(1,0);
+        glVertex2f(Values.WIDTH,0);
+        glEnd();
+    }
     int draw(){
-        //Рисуем фон
-        
+        setBackground();
         return 0;
     }
     void update(){
