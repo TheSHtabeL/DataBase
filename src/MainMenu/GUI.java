@@ -1,6 +1,5 @@
 package MainMenu;
 
-import Settings.*;
 import java.io.IOException;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.opengl.Texture;
@@ -8,10 +7,7 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.*;
-import org.lwjgl.LWJGLException;
-import org.w3c.dom.Text;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -27,22 +23,6 @@ public class GUI {
     private static Texture exitNotActive;
 
     void init() {
-        try {
-            //Создаём окно
-            Display.setDisplayMode(new DisplayMode(Values.WIDTH, Values.HEIGHT));
-            Display.create();
-            Display.setTitle("Program Window");
-        } catch (LWJGLException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0,Values.WIDTH,Values.HEIGHT,0,1,-1);
-        glMatrixMode(GL_MODELVIEW);
-        glEnable(GL_TEXTURE_2D);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         //Создаём кнопки
         buttons = new Button[4];
         buttons[0] = new Button( (Display.getWidth()/2)-200, (Display.getHeight()/2)-100, (Display.getWidth()/2)+200, (Display.getHeight()/2)-25 ); //Start
@@ -90,7 +70,7 @@ public class GUI {
         glVertex2f(Values.WIDTH,0);
         glEnd();
     }
-    boolean draw(){
+    int draw(){
         Texture button = null;
         glClear(GL_COLOR_BUFFER_BIT);
         setBackground();
@@ -108,10 +88,11 @@ public class GUI {
                         break;
                 }
                 if (Mouse.isButtonDown(0) && (i == 2)) {
-                    return true;
+                    return 2;
                 }else if(Mouse.isButtonDown(0) && (i == 1)) {
-                    Settings.Control control = new Control();
-                    control.main();
+                    return 1;
+                }else if(Mouse.isButtonDown(0) && (i == 0)){
+                    return 0;
                 }
             }else {
                 switch (i){
@@ -138,8 +119,7 @@ public class GUI {
             glVertex2f(buttons[i].x0, buttons[i].y1);
             glEnd();
         }
-
-        return false;
+        return 3;
     }
     void update(){
         updateOpenGL();

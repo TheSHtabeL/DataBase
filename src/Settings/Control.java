@@ -12,6 +12,7 @@ public class Control {
         gui.clear();
         while( !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
             if(Display.isCloseRequested()){
+                gui.reveal();
                 System.exit(0);
             }
             gui.update();
