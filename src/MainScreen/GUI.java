@@ -14,7 +14,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class GUI {
     private static Texture background;
-    private static Texture naButton;
+    private static Texture aNewCustomer;
+    private static Texture naNewCustomer;
+    private static Texture aChangeCustomer;
+    private static Texture naChangeCustomer;
+    private static Texture aDeleteCustomer;
+    private static Texture naDeleteCustomer;
     private static Texture view;
     private static Texture aArrow;
     private static Texture naArrow;
@@ -22,7 +27,6 @@ public class GUI {
     private static Texture naArrowReversed;
     private static Texture aFind;
     private static Texture naFind;
-    private static Texture aButton;
     private static Button buttons[] = new Button[6];
 
     Texture textureBind(String name){
@@ -36,9 +40,8 @@ public class GUI {
     }
 
     void init(){
+        //Грузим текстуры кнопок
         background = textureBind("background");
-        aButton = textureBind("green");
-        naButton = textureBind("red");
         view = textureBind("view");
         aArrow = textureBind("aArrow");
         naArrow = textureBind("naArrow");
@@ -46,6 +49,12 @@ public class GUI {
         naArrowReversed = textureBind("naArrowReversed");
         aFind = textureBind("aFind");
         naFind = textureBind("naFind");
+        aNewCustomer = textureBind("aNewCustomer");
+        naNewCustomer = textureBind("naNewCustomer");
+        aChangeCustomer = textureBind("aChangeCustomer");
+        naChangeCustomer = textureBind("naChangeCustomer");
+        aDeleteCustomer = textureBind("aDeleteCustomer");
+        naDeleteCustomer = textureBind("naDeleteCustomer");
         //Создаём кнопки
         buttons[0] = new Button((Values.WIDTH/2)+350,(Values.HEIGHT/2)-150,(Values.WIDTH/2)+600,(Values.HEIGHT/2)-75);
         buttons[1] = new Button((Values.WIDTH/2)+350,(Values.HEIGHT/2)-50,(Values.WIDTH/2)+600,(Values.HEIGHT/2)+25);
@@ -87,9 +96,13 @@ public class GUI {
             if(buttons[i].isActive(Mouse.getX(),Values.HEIGHT-Mouse.getY())){
                 switch(i){
                     case 0:
+                        aNewCustomer.bind();
+                        break;
                     case 1:
+                        aChangeCustomer.bind();
+                        break;
                     case 2:
-                        aButton.bind();
+                        aDeleteCustomer.bind();
                         break;
                     case 3:
                         aArrowReversed.bind();
@@ -104,9 +117,13 @@ public class GUI {
             }else{
                 switch (i) {
                     case 0:
+                        naNewCustomer.bind();
+                        break;
                     case 1:
+                        naChangeCustomer.bind();
+                        break;
                     case 2:
-                        naButton.bind();
+                        naDeleteCustomer.bind();
                         break;
                     case 3:
                         naArrowReversed.bind();
@@ -143,11 +160,15 @@ public class GUI {
     void release(){
         background.release();
         view.release();
-        aButton.release();
-        naButton.release();
         aArrowReversed.release();
         naArrowReversed.release();
         aFind.release();
         naFind.release();
+        aDeleteCustomer.release();
+        naDeleteCustomer.release();
+        aNewCustomer.release();
+        naNewCustomer.release();
+        aChangeCustomer.release();
+        naChangeCustomer.release();
     }
 }
