@@ -9,7 +9,6 @@ public class GUIsettings extends GUI {
     private static Texture sound;
     private static Texture filled;
     private static Texture unfilled;
-    private static Texture flag[] = new Texture[2];
     private static Button buttons[] = new Button[2];
     private static boolean permission = true;
 
@@ -23,8 +22,6 @@ public class GUIsettings extends GUI {
         //Подгружаем кнопки
         buttons[0] = new Button((Values.WIDTH/2) + 150, (Values.HEIGHT/2) - 200, (Values.WIDTH/2) + 250, (Values.HEIGHT/2) - 100);
         buttons[1] = new Button((Values.WIDTH/2) + 150, (Values.HEIGHT/2), (Values.WIDTH/2) + 250, (Values.HEIGHT/2) + 100);
-        flag[0] = unfilled;
-        flag[1] = unfilled;
     }
     void release(){
         background.release();
@@ -32,8 +29,6 @@ public class GUIsettings extends GUI {
         sound.release();
         filled.release();
         unfilled.release();
-        flag[0].release();
-        flag[1].release();
     }
     int draw(){
         setBackground();
@@ -41,18 +36,37 @@ public class GUIsettings extends GUI {
         for(int i=0; i<2; i++){
             if(buttons[i].isActive(Mouse.getX(),Values.HEIGHT-Mouse.getY()) && Mouse.isButtonDown(0)) {
                 if(permission) {
-                    permission = !permission;
-                    if (flag[i] == filled) {
-                        flag[i] = unfilled;
-                    } else {
-                        flag[i] = filled;
+                    if( i == 0){
+                        Values.Fullscreen = !Values.Fullscreen;
+                    }else{
+                        Values.Sound = !Values.Sound;
                     }
+                    permission = !permission;
+                    //if (flag[i] == filled) {
+                    //   flag[i] = unfilled;
+                    //} else {
+                    //    flag[i] = filled;
+                    //}
                 }
             }
             if(!Mouse.isButtonDown(0)){
                 permission = true;
             }
-            flag[i].bind();
+            //
+            if( i == 0) {
+                if( Values.Fullscreen == true ){
+                    filled.bind();
+                }else{
+                    unfilled.bind();
+                }
+            }
+            if( i == 1 ) {
+                if (Values.Sound == true) {
+                    filled.bind();
+                } else {
+                    unfilled.bind();
+                }
+            }
             glBegin(GL_QUADS);
             glTexCoord2f(0,0);
             glVertex2f(buttons[i].x0, buttons[i].y0);
