@@ -42,11 +42,6 @@ public class GUIsettings extends GUI {
                         Values.Sound = !Values.Sound;
                     }
                     permission = !permission;
-                    //if (flag[i] == filled) {
-                    //   flag[i] = unfilled;
-                    //} else {
-                    //    flag[i] = filled;
-                    //}
                 }
             }
             if(!Mouse.isButtonDown(0)){
