@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class GUImainScreen extends GUI{
+public class GUImainScreen extends GUI {
     private static Texture aNewCustomer;
     private static Texture naNewCustomer;
     private static Texture aChangeCustomer;
@@ -35,7 +35,8 @@ public class GUImainScreen extends GUI{
     private static ArrayList<String> findString = new ArrayList<String>();
     private long lastFrame;
     private long time;
-    void init(){
+
+    void init() {
         //Загрузка текстур
         lastFrame = getTime();
         background = textureBind("Main Screen", "background");
@@ -54,67 +55,70 @@ public class GUImainScreen extends GUI{
         naDeleteCustomer = textureBind("Main Screen", "naDeleteCustomer");
         cursor = textureBind("Main Screen", "cursor");
         //Загружаем текстуры алфавитов
-        space = textureBind("Main Screen","Letters/space");
-        for(int i=0; i<10; i++){
-            numbers[i] = textureBind("Main Screen","Letters/" + String.valueOf(i)); //Загрузка цифр
+        space = textureBind("Main Screen", "Letters/space");
+        for (int i = 0; i < 10; i++) {
+            numbers[i] = textureBind("Main Screen", "Letters/" + String.valueOf(i)); //Загрузка цифр
         }
-        for(int i=1; i<27; i++){
-            enULetters[i-1] = textureBind("Main Screen","Letters/enU_" + String.valueOf(i));
-            enLLetters[i-1] = textureBind("Main Screen","Letters/enL_" + String.valueOf(i));
+        for (int i = 1; i < 27; i++) {
+            enULetters[i - 1] = textureBind("Main Screen", "Letters/enU_" + String.valueOf(i));
+            enLLetters[i - 1] = textureBind("Main Screen", "Letters/enL_" + String.valueOf(i));
         }
         //Создаём кнопки
-        buttons[0] = new Button((Values.WIDTH/2)+350,(Values.HEIGHT/2)-150,(Values.WIDTH/2)+600,(Values.HEIGHT/2)-75); //Создать
-        buttons[1] = new Button((Values.WIDTH/2)+350,(Values.HEIGHT/2)-50,(Values.WIDTH/2)+600,(Values.HEIGHT/2)+25); //Изменить
-        buttons[2] = new Button((Values.WIDTH/2)+350,(Values.HEIGHT/2)+50,(Values.WIDTH/2)+600,(Values.HEIGHT/2)+125); //Удалить
-        buttons[3] = new Button((Values.WIDTH/2)-150,(Values.HEIGHT/2)+230,(Values.WIDTH/2)-50,(Values.HEIGHT/2)+330); //Стрелка влево
-        buttons[4] = new Button((Values.WIDTH/2)+50,(Values.HEIGHT/2)+230,(Values.WIDTH/2)+150,(Values.HEIGHT/2)+330); //Стрелка вправо
-        buttons[5] = new Button((Values.WIDTH/2)-300,(Values.HEIGHT/2)-275,(Values.WIDTH/2)+300,(Values.HEIGHT/2)-205); //Строка поиска
+        buttons[0] = new Button((Values.WIDTH / 2) + 350, (Values.HEIGHT / 2) - 150, (Values.WIDTH / 2) + 600, (Values.HEIGHT / 2) - 75); //Создать
+        buttons[1] = new Button((Values.WIDTH / 2) + 350, (Values.HEIGHT / 2) - 50, (Values.WIDTH / 2) + 600, (Values.HEIGHT / 2) + 25); //Изменить
+        buttons[2] = new Button((Values.WIDTH / 2) + 350, (Values.HEIGHT / 2) + 50, (Values.WIDTH / 2) + 600, (Values.HEIGHT / 2) + 125); //Удалить
+        buttons[3] = new Button((Values.WIDTH / 2) - 150, (Values.HEIGHT / 2) + 230, (Values.WIDTH / 2) - 50, (Values.HEIGHT / 2) + 330); //Стрелка влево
+        buttons[4] = new Button((Values.WIDTH / 2) + 50, (Values.HEIGHT / 2) + 230, (Values.WIDTH / 2) + 150, (Values.HEIGHT / 2) + 330); //Стрелка вправо
+        buttons[5] = new Button((Values.WIDTH / 2) - 300, (Values.HEIGHT / 2) - 275, (Values.WIDTH / 2) + 300, (Values.HEIGHT / 2) - 205); //Строка поиска
     }
-    void showViewPanel(){
+
+    void showViewPanel() {
         //Отрисовка экрана вывода записей
         view.bind();
         glBegin(GL_QUADS);
-        glTexCoord2f(0,0);
-        glVertex2f((Values.WIDTH/2)-300, (Values.HEIGHT/2)-200);
-        glTexCoord2f(1,0);
-        glVertex2f((Values.WIDTH/2)+300, (Values.HEIGHT/2)-200);
-        glTexCoord2f(1,1);
-        glVertex2f((Values.WIDTH/2)+300, (Values.HEIGHT/2)+200);
-        glTexCoord2f(0,1);
-        glVertex2f((Values.WIDTH/2)-300, (Values.HEIGHT/2)+200);
+        glTexCoord2f(0, 0);
+        glVertex2f((Values.WIDTH / 2) - 300, (Values.HEIGHT / 2) - 200);
+        glTexCoord2f(1, 0);
+        glVertex2f((Values.WIDTH / 2) + 300, (Values.HEIGHT / 2) - 200);
+        glTexCoord2f(1, 1);
+        glVertex2f((Values.WIDTH / 2) + 300, (Values.HEIGHT / 2) + 200);
+        glTexCoord2f(0, 1);
+        glVertex2f((Values.WIDTH / 2) - 300, (Values.HEIGHT / 2) + 200);
         glEnd();
     }
-    void showCursor(){
+
+    void showCursor() {
         int delta = getDeltaTime();
-        if(delta > cursorCounter){
+        if (delta > cursorCounter) {
             cursorDelta = -cursorDelta;
             cursorCounter = 400;
 
-        }else{
+        } else {
             cursorCounter -= delta;
         }
         cursor.bind();
         glBegin(GL_QUADS);
-        glTexCoord2f( 0.5F + cursorDelta, 0 );
-        glVertex2f( (Values.WIDTH/2)-285 + 30*cursorPointer, (Values.HEIGHT/2)-265 );
-        glTexCoord2f( 0.5F, 0 );
-        glVertex2f( (Values.WIDTH/2)-290 + 30*cursorPointer, (Values.HEIGHT/2)-265 );
-        glTexCoord2f( 0.5F, 1 );
-        glVertex2f( (Values.WIDTH/2)-290 + 30*cursorPointer, (Values.HEIGHT/2)-215 );
-        glTexCoord2f( 0.5F + cursorDelta, 1 );
-        glVertex2f( (Values.WIDTH/2)-285 + 30*cursorPointer, (Values.HEIGHT/2)-215 );
+        glTexCoord2f(0.5F + cursorDelta, 0);
+        glVertex2f((Values.WIDTH / 2) - 285 + 30 * cursorPointer, (Values.HEIGHT / 2) - 265);
+        glTexCoord2f(0.5F, 0);
+        glVertex2f((Values.WIDTH / 2) - 290 + 30 * cursorPointer, (Values.HEIGHT / 2) - 265);
+        glTexCoord2f(0.5F, 1);
+        glVertex2f((Values.WIDTH / 2) - 290 + 30 * cursorPointer, (Values.HEIGHT / 2) - 215);
+        glTexCoord2f(0.5F + cursorDelta, 1);
+        glVertex2f((Values.WIDTH / 2) - 285 + 30 * cursorPointer, (Values.HEIGHT / 2) - 215);
         glEnd();
     }
-    int draw(){
+
+    int draw() {
         setBackground();
         showViewPanel();
         //Выводим на экран кнопки
-        for(int i=0; i<buttons.length; i++){
-            if( Mouse.isButtonDown(0) && i!=5 ){
+        for (int i = 0; i < buttons.length; i++) {
+            if (Mouse.isButtonDown(0) && i != 5) {
                 findActive = false;
             }
-            if(buttons[i].isActive(Mouse.getX(),Values.HEIGHT-Mouse.getY())){
-                switch(i){
+            if (buttons[i].isActive(Mouse.getX(), Values.HEIGHT - Mouse.getY())) {
+                switch (i) {
                     case 0:
                         aNewCustomer.bind();
                         break;
@@ -131,13 +135,13 @@ public class GUImainScreen extends GUI{
                         aArrow.bind();
                         break;
                     case 5:
-                        if( Mouse.isButtonDown(0) ){
+                        if (Mouse.isButtonDown(0)) {
                             findActive = true;
                         }
                         aFind.bind();
                         break;
                 }
-            }else{
+            } else {
                 switch (i) {
                     case 0:
                         naNewCustomer.bind();
@@ -155,44 +159,45 @@ public class GUImainScreen extends GUI{
                         naArrow.bind();
                         break;
                     case 5:
-                        if(findActive || findString.size() != 0){
+                        if (findActive || findString.size() != 0) {
                             aFind.bind();
-                        }else {
+                        } else {
                             naFind.bind();
                         }
                         break;
                 }
             }
             glBegin(GL_QUADS);
-            glTexCoord2f(0,0);
+            glTexCoord2f(0, 0);
             glVertex2f(buttons[i].x0, buttons[i].y0);
-            glTexCoord2f(1,0);
+            glTexCoord2f(1, 0);
             glVertex2f(buttons[i].x1, buttons[i].y0);
-            glTexCoord2f(1,1);
+            glTexCoord2f(1, 1);
             glVertex2f(buttons[i].x1, buttons[i].y1);
-            glTexCoord2f(0,1);
+            glTexCoord2f(0, 1);
             glVertex2f(buttons[i].x0, buttons[i].y1);
             glEnd();
         }
         textInput();
         //Вывод курсора, если строка поиска активна
-        if(!findActive) {
-            while(Keyboard.next());
-        }else{
+        if (!findActive) {
+            while (Keyboard.next()) ;
+        } else {
             showCursor();
         }
         //Блок ввода и вывода текста
         textOutput();
-        if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+        if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             return 0;
-        }else {
+        } else {
             return 4;
         }
     }
-    void textOutput(){
-        for(int i=0; i<findString.size(); i++){
+
+    void textOutput() {
+        for (int i = 0; i < findString.size(); i++) {
             //Выбираем текстуру для символа
-            switch (findString.get(i)){
+            switch (findString.get(i)) {
                 case "0":
                     numbers[0].bind();
                     break;
@@ -304,36 +309,112 @@ public class GUImainScreen extends GUI{
                 case "Z":
                     enULetters[25].bind();
                     break;
+                case "a":
+                    enLLetters[0].bind();
+                    break;
+                case "b":
+                    enLLetters[1].bind();
+                    break;
+                case "c":
+                    enLLetters[2].bind();
+                    break;
+                case "d":
+                    enLLetters[3].bind();
+                    break;
+                case "e":
+                    enLLetters[4].bind();
+                    break;
+                case "f":
+                    enLLetters[5].bind();
+                    break;
+                case "g":
+                    enLLetters[6].bind();
+                    break;
+                case "h":
+                    enLLetters[7].bind();
+                    break;
+                case "i":
+                    enLLetters[8].bind();
+                    break;
+                case "j":
+                    enLLetters[9].bind();
+                    break;
+                case "k":
+                    enLLetters[10].bind();
+                    break;
+                case "l":
+                    enLLetters[11].bind();
+                    break;
+                case "m":
+                    enLLetters[12].bind();
+                    break;
+                case "n":
+                    enLLetters[13].bind();
+                    break;
+                case "o":
+                    enLLetters[14].bind();
+                    break;
+                case "p":
+                    enLLetters[15].bind();
+                    break;
                 case "q":
                     enLLetters[16].bind();
+                    break;
+                case "r":
+                    enLLetters[17].bind();
+                    break;
+                case "s":
+                    enLLetters[18].bind();
+                    break;
+                case "t":
+                    enLLetters[19].bind();
+                    break;
+                case "u":
+                    enLLetters[20].bind();
+                    break;
+                case "v":
+                    enLLetters[21].bind();
+                    break;
+                case "w":
+                    enLLetters[22].bind();
+                    break;
+                case "x":
+                    enLLetters[23].bind();
+                    break;
+                case "y":
+                    enLLetters[24].bind();
+                    break;
+                case "z":
+                    enLLetters[25].bind();
                     break;
                 default:
                     break;
             }
             //Выводим символ в строку поиска
             glBegin(GL_QUADS);
-            glTexCoord2f( 0.1F, 0.1F );
-            glVertex2f( (Values.WIDTH/2)-285 + 30*(i), (Values.HEIGHT/2)-265 );
-            glTexCoord2f( 0.9F, 0.1F );
-            glVertex2f( (Values.WIDTH/2)-290 + 30*(i+1), (Values.HEIGHT/2)-265 );
-            glTexCoord2f( 0.9F, 0.9F );
-            glVertex2f( (Values.WIDTH/2)-290 + 30*(i+1), (Values.HEIGHT/2)-215 );
-            glTexCoord2f( 0.1F, 0.9F );
-            glVertex2f( (Values.WIDTH/2)-285 + 30*(i), (Values.HEIGHT/2)-215 );
+            glTexCoord2f(0.1F, 0.1F);
+            glVertex2f((Values.WIDTH / 2) - 285 + 30 * (i), (Values.HEIGHT / 2) - 265);
+            glTexCoord2f(0.9F, 0.1F);
+            glVertex2f((Values.WIDTH / 2) - 290 + 30 * (i + 1), (Values.HEIGHT / 2) - 265);
+            glTexCoord2f(0.9F, 0.9F);
+            glVertex2f((Values.WIDTH / 2) - 290 + 30 * (i + 1), (Values.HEIGHT / 2) - 215);
+            glTexCoord2f(0.1F, 0.9F);
+            glVertex2f((Values.WIDTH / 2) - 285 + 30 * (i), (Values.HEIGHT / 2) - 215);
             glEnd();
         }
     }
-    void textInput(){
+
+    void textInput() {
         boolean timeLocale = Values.enLocale;
-        while(Keyboard.next()){
-            if( Keyboard.getEventKeyState() ) {
-                if( Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && Keyboard.isKeyDown(Keyboard.KEY_LMENU)){
-                    if(Values.enLocale == timeLocale) {
+        while (Keyboard.next()) {
+            if (Keyboard.getEventKeyState()) {
+                if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
+                    if (Values.enLocale == timeLocale) {
                         Values.enLocale = !Values.enLocale;
                         System.out.println(Values.enLocale);
                     }
                 }
-                if( ((cursorPointer < 19) || (Keyboard.getEventKey() == Keyboard.KEY_BACK) && (findActive)) ) {
+                if (((cursorPointer < 19) || (Keyboard.getEventKey() == Keyboard.KEY_BACK) && (findActive))) {
                     switch (Keyboard.getEventKey()) {
                         case Keyboard.KEY_BACK:
                             if (cursorPointer != 0) {
@@ -386,210 +467,466 @@ public class GUImainScreen extends GUI{
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_Q:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("Q");
-                            }else{
-                                findString.add("q");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if (Values.enLocale) {
+                                    findString.add("Q");
+                                } else {
+                                    findString.add("Й");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("q");
+                                }else{
+                                    findString.add("й");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_W:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("W");
-                            }else{
-                                findString.add("w");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("W");
+                                }else{
+                                    findString.add("Ц");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("w");
+                                }else{
+                                    findString.add("ц");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_E:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("E");
-                            }else{
-                                findString.add("e");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("E");
+                                }else{
+                                    findString.add("У");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("e");
+                                }else{
+                                    findString.add("у");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_R:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("R");
-                            }else{
-                                findString.add("r");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("R");
+                                }else{
+                                    findString.add("К");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("r");
+                                }else{
+                                    findString.add("к");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_T:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("T");
-                            }else{
-                                findString.add("t");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("T");
+                                }else{
+                                    findString.add("Е");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("t");
+                                }else{
+                                    findString.add("е");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_Y:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("Y");
-                            }else{
-                                findString.add("y");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("Y");
+                                }else{
+                                    findString.add("Н");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("y");
+                                }else{
+                                    findString.add("н");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_U:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("U");
-                            }else{
-                                findString.add("u");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("U");
+                                }else{
+                                    findString.add("Г");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("u");
+                                }else{
+                                    findString.add("г");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_I:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("I");
-                            }else{
-                                findString.add("i");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("I");
+                                }else{
+                                    findString.add("Ш");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("i");
+                                }else{
+                                    findString.add("ш");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_O:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("O");
-                            }else{
-                                findString.add("o");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("O");
+                                }else{
+                                    findString.add("щ");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("o");
+                                }else{
+                                    findString.add("щ");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_P:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("P");
-                            }else{
-                                findString.add("p");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("P");
+                                }else{
+                                    findString.add("З");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("p");
+                                }else{
+                                    findString.add("з");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_A:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("A");
-                            }else{
-                                findString.add("a");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("A");
+                                }else{
+                                    findString.add("Ф");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("a");
+                                }else {
+                                    findString.add("ф");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_S:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("S");
-                            }else{
-                                findString.add("s");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("S");
+                                }else{
+                                    findString.add("Ы");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("s");
+                                }else{
+                                    findString.add("ы");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_D:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("D");
-                            }else{
-                                findString.add("d");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("D");
+                                }else{
+                                    findString.add("В");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("d");
+                                }else{
+                                    findString.add("в");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_F:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("F");
-                            }else{
-                                findString.add("f");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("F");
+                                }else{
+                                    findString.add("А");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("f");
+                                }else {
+                                    findString.add("а");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_G:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("G");
-                            }else{
-                                findString.add("g");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("G");
+                                }else{
+                                    findString.add("П");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("g");
+                                }else{
+                                    findString.add("п");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_H:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("H");
-                            }else{
-                                findString.add("h");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("H");
+                                }else{
+                                    findString.add("Р");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("h");
+                                }else{
+                                    findString.add("р");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_J:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("J");
-                            }else{
-                                findString.add("j");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("J");
+                                }else{
+                                    findString.add("О");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("j");
+                                }else{
+                                    findString.add("о");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_K:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("K");
-                            }else{
-                                findString.add("k");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("K");
+                                }else{
+                                    findString.add("Л");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("k");
+                                }else{
+                                    findString.add("л");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_L:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("L");
-                            }else{
-                                findString.add("l");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("L");
+                                }else{
+                                    findString.add("Д");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("l");
+                                }else{
+                                    findString.add("д");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_Z:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("Z");
-                            }else{
-                                findString.add("z");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("Z");
+                                }else{
+                                    findString.add("Я");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("z");
+                                }else{
+                                    findString.add("я");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_X:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("X");
-                            }else{
-                                findString.add("x");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("X");
+                                }else{
+                                    findString.add("Ч");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("x");
+                                }else{
+                                    findString.add("ч");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_C:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("C");
-                            }else{
-                                findString.add("c");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("C");
+                                }else{
+                                    findString.add("С");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("c");
+                                }else{
+                                    findString.add("с");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_V:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("V");
-                            }else{
-                                findString.add("v");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("V");
+                                }else{
+                                    findString.add("М");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("v");
+                                }else{
+                                    findString.add("м");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_B:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("B");
-                            }else{
-                                findString.add("b");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("B");
+                                }else{
+                                    findString.add("И");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("b");
+                                }else{
+                                    findString.add("и");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_N:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("N");
-                            }else{
-                                findString.add("n");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("N");
+                                }else{
+                                    findString.add("Т");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("n");
+                                }else{
+                                    findString.add("т");
+                                }
                             }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_M:
-                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
-                                findString.add("M");
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                if(Values.enLocale) {
+                                    findString.add("M");
+                                }else{
+                                    findString.add("Ь");
+                                }
+                            } else {
+                                if(Values.enLocale) {
+                                    findString.add("m");
+                                }else{
+                                    findString.add("ь");
+                                }
+                            }
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_LBRACKET:
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                findString.add("Х");
                             }else{
-                                findString.add("m");
+                                findString.add("х");
+                            }
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_RBRACKET:
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                findString.add("Ъ");
+                            }else{
+                                findString.add("ъ");
+                            }
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_SEMICOLON:
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                findString.add("Ж");
+                            }else{
+                                findString.add("ж");
+                            }
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_APOSTROPHE:
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                findString.add("Э");
+                            }else{
+                                findString.add("э");
+                            }
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_COMMA:
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                findString.add("Б");
+                            }else{
+                                findString.add("б");
+                            }
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_PERIOD:
+                            if (Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                                findString.add("Ю");
+                            }else{
+                                findString.add("ю");
                             }
                             cursorPointer++;
                             break;
@@ -613,16 +950,19 @@ public class GUImainScreen extends GUI{
             }
         }
     }
-    long getTime(){
-        return (Sys.getTime() * 1000 )/Sys.getTimerResolution();
+
+    long getTime() {
+        return (Sys.getTime() * 1000) / Sys.getTimerResolution();
     }
-    int getDeltaTime(){
+
+    int getDeltaTime() {
         long thisFrame = getTime();
         int delta = (int) (thisFrame - lastFrame);
         lastFrame = thisFrame;
         return delta;
     }
-    void release(){
+
+    void release() {
         aNewCustomer.release();
         naNewCustomer.release();
         aChangeCustomer.release();
@@ -637,10 +977,10 @@ public class GUImainScreen extends GUI{
         aFind.release();
         naFind.release();
         cursor.release();
-        for(int i=0; i>numbers.length; i++){
+        for (int i = 0; i > numbers.length; i++) {
             numbers[i].release();
         }
-        for(int i=0; i<enULetters.length; i++){
+        for (int i = 0; i < enULetters.length; i++) {
             enULetters[i].release();
             enLLetters[i].release();
         }
