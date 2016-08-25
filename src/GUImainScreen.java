@@ -1,3 +1,4 @@
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.opengl.Texture;
@@ -27,13 +28,16 @@ public class GUImainScreen extends GUI{
     private static Texture[] ruLetters;
     private static Texture[] numbers = new Texture[10];
     private static int cursorPointer = 0;
-    private static int cursorCounter = 0;
+    private static int cursorCounter = 10;
     private static float cursorDelta = -0.5F;
     private static Button buttons[] = new Button[6];
     private static boolean findActive = false;
     private static ArrayList<String> findString = new ArrayList<String>();
+    private long lastFrame;
+    private long time;
     void init(){
         //Загрузка текстур
+        lastFrame = getTime();
         background = textureBind("Main Screen", "background");
         view = textureBind("Main Screen", "view");
         aArrow = textureBind("Main Screen", "aArrow");
@@ -81,10 +85,13 @@ public class GUImainScreen extends GUI{
         glEnd();
     }
     void showCursor(){
-        cursorCounter++;
-        if(cursorCounter > 10){
-            cursorCounter = 0;
+        int delta = getDeltaTime();
+        if(delta > cursorCounter){
             cursorDelta = -cursorDelta;
+            cursorCounter = 400;
+
+        }else{
+            cursorCounter -= delta;
         }
         cursor.bind();
         glBegin(GL_QUADS);
@@ -167,11 +174,11 @@ public class GUImainScreen extends GUI{
             glVertex2f(buttons[i].x0, buttons[i].y1);
             glEnd();
         }
+        textInput();
         //Вывод курсора, если строка поиска активна
         if(!findActive) {
             while(Keyboard.next());
         }else{
-            textInput();
             showCursor();
         }
         //Блок ввода и вывода текста
@@ -317,9 +324,16 @@ public class GUImainScreen extends GUI{
         }
     }
     void textInput(){
+        boolean timeLocale = Values.enLocale;
         while(Keyboard.next()){
             if( Keyboard.getEventKeyState() ) {
-                if( (cursorPointer < 19) || (Keyboard.getEventKey() == Keyboard.KEY_BACK)) {
+                if( Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && Keyboard.isKeyDown(Keyboard.KEY_LMENU)){
+                    if(Values.enLocale == timeLocale) {
+                        Values.enLocale = !Values.enLocale;
+                        System.out.println(Values.enLocale);
+                    }
+                }
+                if( ((cursorPointer < 19) || (Keyboard.getEventKey() == Keyboard.KEY_BACK) && (findActive)) ) {
                     switch (Keyboard.getEventKey()) {
                         case Keyboard.KEY_BACK:
                             if (cursorPointer != 0) {
@@ -372,110 +386,213 @@ public class GUImainScreen extends GUI{
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_Q:
-                            findString.add("Q");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("Q");
+                            }else{
+                                findString.add("q");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_W:
-                            findString.add("W");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("W");
+                            }else{
+                                findString.add("w");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_E:
-                            findString.add("E");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("E");
+                            }else{
+                                findString.add("e");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_R:
-                            findString.add("R");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("R");
+                            }else{
+                                findString.add("r");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_T:
-                            findString.add("T");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("T");
+                            }else{
+                                findString.add("t");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_Y:
-                            findString.add("Y");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("Y");
+                            }else{
+                                findString.add("y");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_U:
-                            findString.add("U");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("U");
+                            }else{
+                                findString.add("u");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_I:
-                            findString.add("I");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("I");
+                            }else{
+                                findString.add("i");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_O:
-                            findString.add("O");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("O");
+                            }else{
+                                findString.add("o");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_P:
-                            findString.add("P");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("P");
+                            }else{
+                                findString.add("p");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_A:
-                            findString.add("A");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("A");
+                            }else{
+                                findString.add("a");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_S:
-                            findString.add("D");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("S");
+                            }else{
+                                findString.add("s");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_D:
-                            findString.add("D");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("D");
+                            }else{
+                                findString.add("d");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_F:
-                            findString.add("F");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("F");
+                            }else{
+                                findString.add("f");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_G:
-                            findString.add("G");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("G");
+                            }else{
+                                findString.add("g");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_H:
-                            findString.add("H");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("H");
+                            }else{
+                                findString.add("h");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_J:
-                            findString.add("J");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("J");
+                            }else{
+                                findString.add("j");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_K:
-                            findString.add("K");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("K");
+                            }else{
+                                findString.add("k");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_L:
-                            findString.add("L");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("L");
+                            }else{
+                                findString.add("l");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_Z:
-                            findString.add("Z");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("Z");
+                            }else{
+                                findString.add("z");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_X:
-                            findString.add("X");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("X");
+                            }else{
+                                findString.add("x");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_C:
-                            findString.add("C");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("C");
+                            }else{
+                                findString.add("c");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_V:
-                            findString.add("V");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("V");
+                            }else{
+                                findString.add("v");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_B:
-                            findString.add("B");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("B");
+                            }else{
+                                findString.add("b");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_N:
-                            findString.add("N");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("N");
+                            }else{
+                                findString.add("n");
+                            }
                             cursorPointer++;
                             break;
                         case Keyboard.KEY_M:
-                            findString.add("M");
+                            if( Values.CapsLockState != Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ) {
+                                findString.add("M");
+                            }else{
+                                findString.add("m");
+                            }
                             cursorPointer++;
                             break;
-
                         case Keyboard.KEY_LEFT:
                             if (cursorPointer != 0) {
                                 cursorPointer--;
@@ -485,11 +602,25 @@ public class GUImainScreen extends GUI{
                             if (cursorPointer != findString.size()) {
                                 cursorPointer++;
                             }
+                            break;
+                        case Keyboard.KEY_CAPITAL:
+                            Values.CapsLockState = !Values.CapsLockState;
+                            System.out.println(Values.CapsLockState);
+                            break;
                     }
                     System.out.println(findString + " " + cursorPointer);
                 }
             }
         }
+    }
+    long getTime(){
+        return (Sys.getTime() * 1000 )/Sys.getTimerResolution();
+    }
+    int getDeltaTime(){
+        long thisFrame = getTime();
+        int delta = (int) (thisFrame - lastFrame);
+        lastFrame = thisFrame;
+        return delta;
     }
     void release(){
         aNewCustomer.release();
