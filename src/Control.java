@@ -1,12 +1,13 @@
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 abstract public class Control {
     public int navigate(){
         GUI gui = initGUI();
         gui.init();
+        LanguageCheck languageCheck = new LanguageCheck();
 
         while(true) {
+            languageCheck.updateLanguage();
             if (Display.isCloseRequested()) {
                 gui.release();
                 System.exit(0);
@@ -24,5 +25,4 @@ abstract public class Control {
         }
     }
     abstract GUI initGUI();
-    //abstract int condition(GUI gui);
 }
