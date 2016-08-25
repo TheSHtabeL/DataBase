@@ -7,7 +7,6 @@ abstract public class Control {
         LanguageCheck languageCheck = new LanguageCheck();
 
         while(true) {
-            languageCheck.updateLanguage();
             if (Display.isCloseRequested()) {
                 gui.release();
                 System.exit(0);
@@ -22,6 +21,7 @@ abstract public class Control {
                     return i;
             }
             gui.update();
+            languageCheck.updateLanguage();
         }
     }
     abstract GUI initGUI();
