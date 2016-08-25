@@ -2,6 +2,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.opengl.Texture;
 
+import java.util.ArrayList;
+
 import static org.lwjgl.opengl.GL11.*;
 
 public class GUImainScreen extends GUI{
@@ -19,10 +21,17 @@ public class GUImainScreen extends GUI{
     private static Texture aFind;
     private static Texture naFind;
     private static Texture cursor;
+    private static Texture space;
+    private static Texture[] enULetters = new Texture[26];
+    private static Texture[] enLLetters = new Texture[26];
+    private static Texture[] ruLetters;
+    private static Texture[] numbers = new Texture[10];
+    private static int cursorPointer = 0;
     private static int cursorCounter = 0;
     private static float cursorDelta = -0.5F;
     private static Button buttons[] = new Button[6];
     private static boolean findActive = false;
+    private static ArrayList<String> findString = new ArrayList<String>();
     void init(){
         //Загрузка текстур
         background = textureBind("Main Screen", "background");
@@ -40,6 +49,15 @@ public class GUImainScreen extends GUI{
         aDeleteCustomer = textureBind("Main Screen", "aDeleteCustomer");
         naDeleteCustomer = textureBind("Main Screen", "naDeleteCustomer");
         cursor = textureBind("Main Screen", "cursor");
+        //Загружаем текстуры алфавитов
+        space = textureBind("Main Screen","Letters/space");
+        for(int i=0; i<10; i++){
+            numbers[i] = textureBind("Main Screen","Letters/" + String.valueOf(i)); //Загрузка цифр
+        }
+        for(int i=1; i<27; i++){
+            enULetters[i-1] = textureBind("Main Screen","Letters/enU_" + String.valueOf(i));
+            enLLetters[i-1] = textureBind("Main Screen","Letters/enL_" + String.valueOf(i));
+        }
         //Создаём кнопки
         buttons[0] = new Button((Values.WIDTH/2)+350,(Values.HEIGHT/2)-150,(Values.WIDTH/2)+600,(Values.HEIGHT/2)-75); //Создать
         buttons[1] = new Button((Values.WIDTH/2)+350,(Values.HEIGHT/2)-50,(Values.WIDTH/2)+600,(Values.HEIGHT/2)+25); //Изменить
@@ -64,24 +82,20 @@ public class GUImainScreen extends GUI{
     }
     void showCursor(){
         cursorCounter++;
-        if(cursorCounter > 30){
+        if(cursorCounter > 10){
             cursorCounter = 0;
             cursorDelta = -cursorDelta;
         }
         cursor.bind();
         glBegin(GL_QUADS);
         glTexCoord2f( 0.5F + cursorDelta, 0 );
-        //glTexCoord2f(0,0);
-        glVertex2f( (Values.WIDTH/2)-260, (Values.HEIGHT/2)-265 );
+        glVertex2f( (Values.WIDTH/2)-285 + 30*cursorPointer, (Values.HEIGHT/2)-265 );
         glTexCoord2f( 0.5F, 0 );
-        //glTexCoord2f(1,0);
-        glVertex2f( (Values.WIDTH/2)-265, (Values.HEIGHT/2)-265 );
+        glVertex2f( (Values.WIDTH/2)-290 + 30*cursorPointer, (Values.HEIGHT/2)-265 );
         glTexCoord2f( 0.5F, 1 );
-        //glTexCoord2f(1,1);
-        glVertex2f( (Values.WIDTH/2)-265, (Values.HEIGHT/2)-215 );
+        glVertex2f( (Values.WIDTH/2)-290 + 30*cursorPointer, (Values.HEIGHT/2)-215 );
         glTexCoord2f( 0.5F + cursorDelta, 1 );
-        //glTexCoord2f(0,1);
-        glVertex2f( (Values.WIDTH/2)-260, (Values.HEIGHT/2)-215 );
+        glVertex2f( (Values.WIDTH/2)-285 + 30*cursorPointer, (Values.HEIGHT/2)-215 );
         glEnd();
     }
     int draw(){
@@ -134,8 +148,7 @@ public class GUImainScreen extends GUI{
                         naArrow.bind();
                         break;
                     case 5:
-                        if(findActive){
-                            showCursor();
+                        if(findActive || findString.size() != 0){
                             aFind.bind();
                         }else {
                             naFind.bind();
@@ -155,13 +168,327 @@ public class GUImainScreen extends GUI{
             glEnd();
         }
         //Вывод курсора, если строка поиска активна
-        if(findActive){
+        if(!findActive) {
+            while(Keyboard.next());
+        }else{
+            textInput();
             showCursor();
         }
+        //Блок ввода и вывода текста
+        textOutput();
         if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
             return 0;
         }else {
             return 4;
+        }
+    }
+    void textOutput(){
+        for(int i=0; i<findString.size(); i++){
+            //Выбираем текстуру для символа
+            switch (findString.get(i)){
+                case "0":
+                    numbers[0].bind();
+                    break;
+                case "1":
+                    numbers[1].bind();
+                    break;
+                case "2":
+                    numbers[2].bind();
+                    break;
+                case "3":
+                    numbers[3].bind();
+                    break;
+                case "4":
+                    numbers[4].bind();
+                    break;
+                case "5":
+                    numbers[5].bind();
+                    break;
+                case "6":
+                    numbers[6].bind();
+                    break;
+                case "7":
+                    numbers[7].bind();
+                    break;
+                case "8":
+                    numbers[8].bind();
+                    break;
+                case "9":
+                    numbers[9].bind();
+                    break;
+                case " ":
+                    space.bind();
+                    break;
+                case "A":
+                    enULetters[0].bind();
+                    break;
+                case "B":
+                    enULetters[1].bind();
+                    break;
+                case "C":
+                    enULetters[2].bind();
+                    break;
+                case "D":
+                    enULetters[3].bind();
+                    break;
+                case "E":
+                    enULetters[4].bind();
+                    break;
+                case "F":
+                    enULetters[5].bind();
+                    break;
+                case "G":
+                    enULetters[6].bind();
+                    break;
+                case "H":
+                    enULetters[7].bind();
+                    break;
+                case "I":
+                    enULetters[8].bind();
+                    break;
+                case "J":
+                    enULetters[9].bind();
+                    break;
+                case "K":
+                    enULetters[10].bind();
+                    break;
+                case "L":
+                    enULetters[11].bind();
+                    break;
+                case "M":
+                    enULetters[12].bind();
+                    break;
+                case "N":
+                    enULetters[13].bind();
+                    break;
+                case "O":
+                    enULetters[14].bind();
+                    break;
+                case "P":
+                    enULetters[15].bind();
+                    break;
+                case "Q":
+                    enULetters[16].bind();
+                    break;
+                case "R":
+                    enULetters[17].bind();
+                    break;
+                case "S":
+                    enULetters[18].bind();
+                    break;
+                case "T":
+                    enULetters[19].bind();
+                    break;
+                case "U":
+                    enULetters[20].bind();
+                    break;
+                case "V":
+                    enULetters[21].bind();
+                    break;
+                case "W":
+                    enULetters[22].bind();
+                    break;
+                case "X":
+                    enULetters[23].bind();
+                    break;
+                case "Y":
+                    enULetters[24].bind();
+                    break;
+                case "Z":
+                    enULetters[25].bind();
+                    break;
+                case "q":
+                    enLLetters[16].bind();
+                    break;
+                default:
+                    break;
+            }
+            //Выводим символ в строку поиска
+            glBegin(GL_QUADS);
+            glTexCoord2f( 0.1F, 0.1F );
+            glVertex2f( (Values.WIDTH/2)-285 + 30*(i), (Values.HEIGHT/2)-265 );
+            glTexCoord2f( 0.9F, 0.1F );
+            glVertex2f( (Values.WIDTH/2)-290 + 30*(i+1), (Values.HEIGHT/2)-265 );
+            glTexCoord2f( 0.9F, 0.9F );
+            glVertex2f( (Values.WIDTH/2)-290 + 30*(i+1), (Values.HEIGHT/2)-215 );
+            glTexCoord2f( 0.1F, 0.9F );
+            glVertex2f( (Values.WIDTH/2)-285 + 30*(i), (Values.HEIGHT/2)-215 );
+            glEnd();
+        }
+    }
+    void textInput(){
+        while(Keyboard.next()){
+            if( Keyboard.getEventKeyState() ) {
+                if( (cursorPointer < 19) || (Keyboard.getEventKey() == Keyboard.KEY_BACK)) {
+                    switch (Keyboard.getEventKey()) {
+                        case Keyboard.KEY_BACK:
+                            if (cursorPointer != 0) {
+                                findString.remove(cursorPointer - 1);
+                                cursorPointer--;
+                            }
+                            break;
+                        case Keyboard.KEY_0:
+                            findString.add("0");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_1:
+                            findString.add("1");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_2:
+                            findString.add("2");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_3:
+                            findString.add("3");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_4:
+                            findString.add("4");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_5:
+                            findString.add("5");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_6:
+                            findString.add("6");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_7:
+                            findString.add("7");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_8:
+                            findString.add("8");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_9:
+                            findString.add("9");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_SPACE:
+                            findString.add(" ");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_Q:
+                            findString.add("Q");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_W:
+                            findString.add("W");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_E:
+                            findString.add("E");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_R:
+                            findString.add("R");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_T:
+                            findString.add("T");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_Y:
+                            findString.add("Y");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_U:
+                            findString.add("U");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_I:
+                            findString.add("I");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_O:
+                            findString.add("O");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_P:
+                            findString.add("P");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_A:
+                            findString.add("A");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_S:
+                            findString.add("D");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_D:
+                            findString.add("D");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_F:
+                            findString.add("F");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_G:
+                            findString.add("G");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_H:
+                            findString.add("H");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_J:
+                            findString.add("J");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_K:
+                            findString.add("K");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_L:
+                            findString.add("L");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_Z:
+                            findString.add("Z");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_X:
+                            findString.add("X");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_C:
+                            findString.add("C");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_V:
+                            findString.add("V");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_B:
+                            findString.add("B");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_N:
+                            findString.add("N");
+                            cursorPointer++;
+                            break;
+                        case Keyboard.KEY_M:
+                            findString.add("M");
+                            cursorPointer++;
+                            break;
+
+                        case Keyboard.KEY_LEFT:
+                            if (cursorPointer != 0) {
+                                cursorPointer--;
+                            }
+                            break;
+                        case Keyboard.KEY_RIGHT:
+                            if (cursorPointer != findString.size()) {
+                                cursorPointer++;
+                            }
+                    }
+                    System.out.println(findString + " " + cursorPointer);
+                }
+            }
         }
     }
     void release(){
@@ -179,5 +506,13 @@ public class GUImainScreen extends GUI{
         aFind.release();
         naFind.release();
         cursor.release();
+        for(int i=0; i>numbers.length; i++){
+            numbers[i].release();
+        }
+        for(int i=0; i<enULetters.length; i++){
+            enULetters[i].release();
+            enLLetters[i].release();
+        }
+        space.release();
     }
 }
