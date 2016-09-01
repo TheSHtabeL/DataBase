@@ -9,4 +9,5 @@ public class Values {
     public static int HEIGHT = 720;
     public static boolean Fullscreen = false;
     public static boolean Sound = true;
+    public static boolean Connection = false;
 }

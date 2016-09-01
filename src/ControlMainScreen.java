@@ -5,6 +5,11 @@ public class ControlMainScreen extends Control{
         GUI gui = initGUI();
         gui.init();
         LanguageCheck languageCheck = new LanguageCheck();
+        DataBase dataBase = new DataBase();
+        if(!Values.Connection) {
+            dataBase.createConnection();
+            Values.Connection = true;
+        }
 
         while(true) {
             if (Display.isCloseRequested()) {
