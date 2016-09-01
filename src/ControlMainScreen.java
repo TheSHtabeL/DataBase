@@ -23,6 +23,8 @@ public class ControlMainScreen extends Control{
                 case 2:
                 case 3:
                     gui.release();
+                    dataBase.closeConnection();
+                    Values.Connection = false;
                     return i;
             }
             gui.update();
