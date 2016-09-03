@@ -10,4 +10,5 @@ public class Values {
     public static boolean Fullscreen = false;
     public static boolean Sound = true;
     public static boolean Connection = false;
+    public static String DataBaseName;
 }

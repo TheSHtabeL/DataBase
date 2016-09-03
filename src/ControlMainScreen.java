@@ -8,6 +8,7 @@ public class ControlMainScreen extends Control{
         DataBase dataBase = new DataBase();
         if(!Values.Connection) {
             dataBase.createConnection();
+            dataBase.joinBase();
             Values.Connection = true;
         }
 
@@ -26,6 +27,13 @@ public class ControlMainScreen extends Control{
                     dataBase.closeConnection();
                     Values.Connection = false;
                     return i;
+                case 4:
+                    dataBase.joinBase();
+                    break;
+                case 5:
+                    dataBase.createTable("HelloFromProgram(name VARCHAR(10))");
+                    break;
+                default:
             }
             gui.update();
         }

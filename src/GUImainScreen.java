@@ -23,6 +23,7 @@ public class GUImainScreen extends GUI {
     private static Texture naFind;
     private static Texture cursor;
     private static Texture space;
+    private static Texture dataBaseText;
     private static Texture[] enULetters = new Texture[26];
     private static Texture[] enLLetters = new Texture[26];
     private static Texture[] ruULetters = new Texture[33];
@@ -35,7 +36,7 @@ public class GUImainScreen extends GUI {
     private static boolean findActive = false;
     private static ArrayList<String> findString = new ArrayList<String>();
     private long lastFrame;
-    private long time;
+    private static boolean permission = true;
 
     void init() {
         //Загрузка текстур
@@ -55,6 +56,7 @@ public class GUImainScreen extends GUI {
         aDeleteCustomer = textureBind("Main Screen", "aDeleteCustomer");
         naDeleteCustomer = textureBind("Main Screen", "naDeleteCustomer");
         cursor = textureBind("Main Screen", "cursor");
+        dataBaseText = textureBind("Main Screen", "dataBaseInfo");
         //Загружаем текстуры алфавитов
         space = textureBind("Main Screen", "Letters/space");
         for (int i = 0; i < 10; i++) {
@@ -72,8 +74,8 @@ public class GUImainScreen extends GUI {
         buttons[0] = new Button((Values.WIDTH / 2) + 350, (Values.HEIGHT / 2) - 150, (Values.WIDTH / 2) + 600, (Values.HEIGHT / 2) - 75); //Создать
         buttons[1] = new Button((Values.WIDTH / 2) + 350, (Values.HEIGHT / 2) - 50, (Values.WIDTH / 2) + 600, (Values.HEIGHT / 2) + 25); //Изменить
         buttons[2] = new Button((Values.WIDTH / 2) + 350, (Values.HEIGHT / 2) + 50, (Values.WIDTH / 2) + 600, (Values.HEIGHT / 2) + 125); //Удалить
-        buttons[3] = new Button((Values.WIDTH / 2) - 150, (Values.HEIGHT / 2) + 230, (Values.WIDTH / 2) - 50, (Values.HEIGHT / 2) + 330); //Стрелка влево
-        buttons[4] = new Button((Values.WIDTH / 2) + 50, (Values.HEIGHT / 2) + 230, (Values.WIDTH / 2) + 150, (Values.HEIGHT / 2) + 330); //Стрелка вправо
+        buttons[3] = new Button((Values.WIDTH / 2) - 150, (Values.HEIGHT / 2) + 210, (Values.WIDTH / 2) - 50, (Values.HEIGHT / 2) + 280); //Стрелка влево
+        buttons[4] = new Button((Values.WIDTH / 2) + 50, (Values.HEIGHT / 2) + 210, (Values.WIDTH / 2) + 150, (Values.HEIGHT / 2) + 280); //Стрелка вправо
         buttons[5] = new Button((Values.WIDTH / 2) - 300, (Values.HEIGHT / 2) - 275, (Values.WIDTH / 2) + 300, (Values.HEIGHT / 2) - 205); //Строка поиска
     }
 
@@ -113,10 +115,30 @@ public class GUImainScreen extends GUI {
         glVertex2f((Values.WIDTH / 2) - 285 + 30 * cursorPointer, (Values.HEIGHT / 2) - 215);
         glEnd();
     }
+    void setDataBaseInfo(String dataBaseName){
+        //Выведем пояснительный текст
+        dataBaseText.bind();
+        glBegin(GL_QUADS);
+        glTexCoord2f(0, 0);
+        glVertex2f((Values.WIDTH / 2) - 600, (Values.HEIGHT / 2) + 290);
+        glTexCoord2f(1, 0);
+        glVertex2f((Values.WIDTH / 2) - 200, (Values.HEIGHT / 2) + 290);
+        glTexCoord2f(1, 1);
+        glVertex2f((Values.WIDTH / 2) - 200, (Values.HEIGHT / 2) + 360);
+        glTexCoord2f(0, 1);
+        glVertex2f((Values.WIDTH / 2) - 600, (Values.HEIGHT / 2) + 360);
+        glEnd();
+        //Вывод названия бд
+        textOutput( dataBaseName );
 
+    }
     int draw() {
         setBackground();
         showViewPanel();
+        setDataBaseInfo();
+        if(!Mouse.isButtonDown(0)){
+            permission = true;
+        }
         //Выводим на экран кнопки
         for (int i = 0; i < buttons.length; i++) {
             if (Mouse.isButtonDown(0) && i != 5) {
@@ -134,13 +156,22 @@ public class GUImainScreen extends GUI {
                         aDeleteCustomer.bind();
                         break;
                     case 3:
+                        if(Mouse.isButtonDown(0) & permission){
+                            permission = false;
+                            return 4;
+                        }
                         aArrowReversed.bind();
                         break;
                     case 4:
+                        if(Mouse.isButtonDown(0) & permission){
+                            permission = false;
+                            return 5;
+                        }
                         aArrow.bind();
                         break;
                     case 5:
                         if (Mouse.isButtonDown(0)) {
+                            permission = false;
                             findActive = true;
                         }
                         aFind.bind();
@@ -195,7 +226,413 @@ public class GUImainScreen extends GUI {
         if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             return 0;
         } else {
-            return 4;
+            return -1;
+        }
+    }
+    void textOutput(String text){
+        for(int i=0; i<text.length(); i++){
+            char symbol = text.charAt(i);
+            switch ( Character.toString(symbol) ){
+                case "0":
+                    numbers[0].bind();
+                    break;
+                case "1":
+                    numbers[1].bind();
+                    break;
+                case "2":
+                    numbers[2].bind();
+                    break;
+                case "3":
+                    numbers[3].bind();
+                    break;
+                case "4":
+                    numbers[4].bind();
+                    break;
+                case "5":
+                    numbers[5].bind();
+                    break;
+                case "6":
+                    numbers[6].bind();
+                    break;
+                case "7":
+                    numbers[7].bind();
+                    break;
+                case "8":
+                    numbers[8].bind();
+                    break;
+                case "9":
+                    numbers[9].bind();
+                    break;
+                case " ":
+                    space.bind();
+                    break;
+                case "A":
+                    enULetters[0].bind();
+                    break;
+                case "B":
+                    enULetters[1].bind();
+                    break;
+                case "C":
+                    enULetters[2].bind();
+                    break;
+                case "D":
+                    enULetters[3].bind();
+                    break;
+                case "E":
+                    enULetters[4].bind();
+                    break;
+                case "F":
+                    enULetters[5].bind();
+                    break;
+                case "G":
+                    enULetters[6].bind();
+                    break;
+                case "H":
+                    enULetters[7].bind();
+                    break;
+                case "I":
+                    enULetters[8].bind();
+                    break;
+                case "J":
+                    enULetters[9].bind();
+                    break;
+                case "K":
+                    enULetters[10].bind();
+                    break;
+                case "L":
+                    enULetters[11].bind();
+                    break;
+                case "M":
+                    enULetters[12].bind();
+                    break;
+                case "N":
+                    enULetters[13].bind();
+                    break;
+                case "O":
+                    enULetters[14].bind();
+                    break;
+                case "P":
+                    enULetters[15].bind();
+                    break;
+                case "Q":
+                    enULetters[16].bind();
+                    break;
+                case "R":
+                    enULetters[17].bind();
+                    break;
+                case "S":
+                    enULetters[18].bind();
+                    break;
+                case "T":
+                    enULetters[19].bind();
+                    break;
+                case "U":
+                    enULetters[20].bind();
+                    break;
+                case "V":
+                    enULetters[21].bind();
+                    break;
+                case "W":
+                    enULetters[22].bind();
+                    break;
+                case "X":
+                    enULetters[23].bind();
+                    break;
+                case "Y":
+                    enULetters[24].bind();
+                    break;
+                case "Z":
+                    enULetters[25].bind();
+                    break;
+                case "a":
+                    enLLetters[0].bind();
+                    break;
+                case "b":
+                    enLLetters[1].bind();
+                    break;
+                case "c":
+                    enLLetters[2].bind();
+                    break;
+                case "d":
+                    enLLetters[3].bind();
+                    break;
+                case "e":
+                    enLLetters[4].bind();
+                    break;
+                case "f":
+                    enLLetters[5].bind();
+                    break;
+                case "g":
+                    enLLetters[6].bind();
+                    break;
+                case "h":
+                    enLLetters[7].bind();
+                    break;
+                case "i":
+                    enLLetters[8].bind();
+                    break;
+                case "j":
+                    enLLetters[9].bind();
+                    break;
+                case "k":
+                    enLLetters[10].bind();
+                    break;
+                case "l":
+                    enLLetters[11].bind();
+                    break;
+                case "m":
+                    enLLetters[12].bind();
+                    break;
+                case "n":
+                    enLLetters[13].bind();
+                    break;
+                case "o":
+                    enLLetters[14].bind();
+                    break;
+                case "p":
+                    enLLetters[15].bind();
+                    break;
+                case "q":
+                    enLLetters[16].bind();
+                    break;
+                case "r":
+                    enLLetters[17].bind();
+                    break;
+                case "s":
+                    enLLetters[18].bind();
+                    break;
+                case "t":
+                    enLLetters[19].bind();
+                    break;
+                case "u":
+                    enLLetters[20].bind();
+                    break;
+                case "v":
+                    enLLetters[21].bind();
+                    break;
+                case "w":
+                    enLLetters[22].bind();
+                    break;
+                case "x":
+                    enLLetters[23].bind();
+                    break;
+                case "y":
+                    enLLetters[24].bind();
+                    break;
+                case "z":
+                    enLLetters[25].bind();
+                    break;
+                case "а":
+                    ruLLetters[0].bind();
+                    break;
+                case "б":
+                    ruLLetters[1].bind();
+                    break;
+                case "в":
+                    ruLLetters[2].bind();
+                    break;
+                case "г":
+                    ruLLetters[3].bind();
+                    break;
+                case "д":
+                    ruLLetters[4].bind();
+                    break;
+                case "е":
+                    ruLLetters[5].bind();
+                    break;
+                case "ё":
+                    ruLLetters[6].bind();
+                    break;
+                case "ж":
+                    ruLLetters[7].bind();
+                    break;
+                case "з":
+                    ruLLetters[8].bind();
+                    break;
+                case "и":
+                    ruLLetters[9].bind();
+                    break;
+                case "й":
+                    ruLLetters[10].bind();
+                    break;
+                case "к":
+                    ruLLetters[11].bind();
+                    break;
+                case "л":
+                    ruLLetters[12].bind();
+                    break;
+                case "м":
+                    ruLLetters[13].bind();
+                    break;
+                case "н":
+                    ruLLetters[14].bind();
+                    break;
+                case "о":
+                    ruLLetters[15].bind();
+                    break;
+                case "п":
+                    ruLLetters[16].bind();
+                    break;
+                case "р":
+                    ruLLetters[17].bind();
+                    break;
+                case "с":
+                    ruLLetters[18].bind();
+                    break;
+                case "т":
+                    ruLLetters[19].bind();
+                    break;
+                case "у":
+                    ruLLetters[20].bind();
+                    break;
+                case "ф":
+                    ruLLetters[21].bind();
+                    break;
+                case "х":
+                    ruLLetters[22].bind();
+                    break;
+                case "ц":
+                    ruLLetters[23].bind();
+                    break;
+                case "ч":
+                    ruLLetters[24].bind();
+                    break;
+                case "ш":
+                    ruLLetters[25].bind();
+                    break;
+                case "щ":
+                    ruLLetters[26].bind();
+                    break;
+                case "ъ":
+                    ruLLetters[27].bind();
+                    break;
+                case "ы":
+                    ruLLetters[28].bind();
+                    break;
+                case "ь":
+                    ruLLetters[29].bind();
+                    break;
+                case "э":
+                    ruLLetters[30].bind();
+                    break;
+                case "ю":
+                    ruLLetters[31].bind();
+                    break;
+                case "я":
+                    ruLLetters[32].bind();
+                    break;
+                case "А":
+                    ruULetters[0].bind();
+                    break;
+                case "Б":
+                    ruULetters[1].bind();
+                    break;
+                case "В":
+                    ruULetters[2].bind();
+                    break;
+                case "Г":
+                    ruULetters[3].bind();
+                    break;
+                case "Д":
+                    ruULetters[4].bind();
+                    break;
+                case "Е":
+                    ruULetters[5].bind();
+                    break;
+                case "Ё":
+                    ruULetters[6].bind();
+                    break;
+                case "Ж":
+                    ruULetters[7].bind();
+                    break;
+                case "З":
+                    ruULetters[8].bind();
+                    break;
+                case "И":
+                    ruULetters[9].bind();
+                    break;
+                case "Й":
+                    ruULetters[10].bind();
+                    break;
+                case "К":
+                    ruULetters[11].bind();
+                    break;
+                case "Л":
+                    ruULetters[12].bind();
+                    break;
+                case "М":
+                    ruULetters[13].bind();
+                    break;
+                case "Н":
+                    ruULetters[14].bind();
+                    break;
+                case "О":
+                    ruULetters[15].bind();
+                    break;
+                case "П":
+                    ruULetters[16].bind();
+                    break;
+                case "Р":
+                    ruULetters[17].bind();
+                    break;
+                case "С":
+                    ruULetters[18].bind();
+                    break;
+                case "Т":
+                    ruULetters[19].bind();
+                    break;
+                case "У":
+                    ruULetters[20].bind();
+                    break;
+                case "Ф":
+                    ruULetters[21].bind();
+                    break;
+                case "Х":
+                    ruULetters[22].bind();
+                    break;
+                case "Ц":
+                    ruULetters[23].bind();
+                    break;
+                case "Ч":
+                    ruULetters[24].bind();
+                    break;
+                case "Ш":
+                    ruULetters[25].bind();
+                    break;
+                case "Щ":
+                    ruULetters[26].bind();
+                    break;
+                case "Ъ":
+                    ruULetters[27].bind();
+                    break;
+                case "Ы":
+                    ruULetters[28].bind();
+                    break;
+                case "Ь":
+                    ruULetters[29].bind();
+                    break;
+                case "Э":
+                    ruULetters[30].bind();
+                    break;
+                case "Ю":
+                    ruULetters[31].bind();
+                    break;
+                case "Я":
+                    ruULetters[32].bind();
+                    break;
+                default:
+                    break;
+            }
+            glBegin(GL_QUADS);
+            glTexCoord2f(0, 0);
+            glVertex2f((Values.WIDTH / 2) - 200 + ( (i+1) * 30 ), (Values.HEIGHT / 2) + 290);
+            glTexCoord2f(1, 0);
+            glVertex2f((Values.WIDTH / 2) - 200 + ( (i+2) * 30 ), (Values.HEIGHT / 2) + 290);
+            glTexCoord2f(1, 1);
+            glVertex2f((Values.WIDTH / 2) - 200 + ( (i+2) * 30 ), (Values.HEIGHT / 2) + 360);
+            glTexCoord2f(0, 1);
+            glVertex2f((Values.WIDTH / 2) - 200 + ( (i+1) * 30 ), (Values.HEIGHT / 2) + 360);
+            glEnd();
         }
     }
 
@@ -1193,6 +1630,7 @@ public class GUImainScreen extends GUI {
         aFind.release();
         naFind.release();
         cursor.release();
+        dataBaseText.release();
         for (int i = 0; i > numbers.length; i++) {
             numbers[i].release();
         }

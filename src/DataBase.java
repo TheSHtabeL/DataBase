@@ -8,10 +8,14 @@ public class DataBase {
     private Connection connection;
 
     DataBase(){
-        basename = "test";
+        basename = "JavaJoinTest";
+
     }
     DataBase(String basename){
         this.basename = basename;
+    }
+    String getBasename(){
+        return basename;
     }
 
     void createConnection(){
@@ -39,8 +43,34 @@ public class DataBase {
             s.printStackTrace();
         }
     }
+    void joinBase(String basename){
+        try{
+            Statement st = connection.createStatement();
+            st.executeUpdate("USE " + basename);
+            st.close();
+        }catch(SQLException s){
+            s.printStackTrace();
+        }
+    }
+    void joinBase(){
+        try{
+            Statement st = connection.createStatement();
+            st.executeUpdate("USE " + this.basename);
+            st.close();
+        }catch(SQLException s){
+            s.printStackTrace();
+        }
+        System.out.println("Joined to " + this.basename);
+    }
     void createTable(String tableName){
-
+        try {
+            Statement st = connection.createStatement();
+            st.executeUpdate("CREATE TABLE IF NOT EXISTS " + tableName);
+            st.close();
+        }catch(SQLException s){
+            s.printStackTrace();
+        }
+        System.out.println("Created table " + tableName);
     }
     void getCustomers(String tableName, String conditions){
     }
